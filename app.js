@@ -1,26 +1,30 @@
-const express = require('express');
-require("dotenv").config();
-const mongoose = require('mongoose');
+import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
 
-
-const app = express()
+const app = express();
+dotenv.config();
 
 // Database Connection
-mongoose
-  .connect("mongodb://localhost:27017/hostelbuddy", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-  })
-  .then(() =>
-    console.log(
-      "==============Mongodb Database Connected Successfully=============="
-    )
-  )
-  .catch((err) => console.log("Database Not Connected !!!"));
+const connect = async () => {
+  try {
+    await mongoose.connect(process.env.DATABASE);
+    console.log("database connected.");
+  } catch (error) {
+    throw error;
+  }
+};
+
+mongoose.connection.on("disconnected", () => {
+  console.log("database disconnected!");
+});
+
+
+
 
 // Run Server
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
-    console.log("Server is running on ", PORT);
+  connect();
+  console.log("Server is running on ", PORT);
 });
