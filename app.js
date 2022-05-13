@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const authRoute = require("./routes/auth")
 require('dotenv').config();
@@ -7,7 +8,7 @@ const app = express();
 // Database Connection
 const connect = async () => {
     try {
-      await mongoose.connect("mongodb://localhost:27017/HOSTEL_HUBbbbbbb");
+      await mongoose.connect("mongodb://localhost:27017/HOSTEL_HUB");
       console.log("database connected.");
     } catch (error) {
       throw error;
@@ -18,6 +19,7 @@ mongoose.connection.on("disconnected", () => {
 });
 
 //middlewares
+app.use(cors());
 app.use(express.json());
 app.use("/api/auth", authRoute);
 
