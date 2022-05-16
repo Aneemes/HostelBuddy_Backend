@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const authRoute = require("./routes/auth")
+const authRoute = require("./routes/auth");
+const hostelsRoute = require("./routes/hostels")
 require('dotenv').config();
 const app = express();
 
@@ -22,6 +23,7 @@ mongoose.connection.on("disconnected", () => {
 app.use(cors());
 app.use(express.json());
 app.use("/api/auth", authRoute);
+app.use("/api/hostels", hostelsRoute);
 
 
 app.use((err, req, res, next) => {
