@@ -1,6 +1,6 @@
 const express = require("express");
 const { createHostel } =require ("../controllers/hostel.js");
-const {verifyAdmin} = require("../utils/verifyToke.js");
+const { verifyAdmin } = require("../utils/verifyToken.js");
 const router = express.Router();
 
 
