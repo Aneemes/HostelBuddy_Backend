@@ -3,6 +3,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const authRoute = require("./routes/auth");
 const hostelsRoute = require("./routes/hostels");
+const roomsRoute = require("./routes/rooms.js");
 const cookieParser = require("cookie-parser");
 require('dotenv').config();
 const app = express();
@@ -26,7 +27,7 @@ app.use(cookieParser())
 app.use(express.json());
 app.use("/api/auth", authRoute);
 app.use("/api/hostels", hostelsRoute);
-
+app.use("/api/rooms", roomsRoute);
 
 app.use((err, req, res, next) => {
     const errorStatus = err.status || 500;
