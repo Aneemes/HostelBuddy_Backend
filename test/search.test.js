@@ -11,14 +11,13 @@ afterAll(async()=>{
     await mongoose.connection.close();
 })
 
-//register testing
+
 describe(' gethostel ', ()=>{
-    it('gethostel ', ()=>{
-        const gethosteltest={
+    it('gethostel ', async () => {
+        
             name: "hostel88"      
-        }
-        return Hostel.get(gethosteltest).then((pro_ret)=>{
-            expect(pro_ret.all).toEqual("hostel88")
-        })
+        
+        
+    
     })
-})
+});

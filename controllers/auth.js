@@ -16,13 +16,13 @@ exports.register = async (req, res, next) => {
     await newUser.save();
     res.status(200).send("User has been created.");
   } catch (err) {
-    next(err);
+    return next(createError(400, "Username already exists"));
   }
 };
 exports.login = async (req, res, next) => {
   try {
     const user = await User.findOne({ username: req.body.username });
-    if (!user) return next(createError(404, "User not found!"));
+    if (!user) return next(createError(404, "Wrong password or username!"));
 
     const isPasswordCorrect = await bcrypt.compare(
       req.body.password,
