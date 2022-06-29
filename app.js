@@ -5,6 +5,7 @@ const authRoute = require("./routes/auth");
 const hostelsRoute = require("./routes/hostels");
 const roomsRoute = require("./routes/rooms.js");
 const bookingsRoute = require("./routes/bookings.js");
+const contactsRoute = require("./routes/contact.js");
 const cookieParser = require("cookie-parser");
 require('dotenv').config();
 const app = express();
@@ -30,7 +31,8 @@ app.use(express.json());
 app.use("/api/auth", authRoute);
 app.use("/api/hostels", hostelsRoute);
 app.use("/api/rooms", roomsRoute);
-app.use("/api/bookings",bookingsRoute);
+app.use("/api/bookings", bookingsRoute);
+app.use("/api/contacts", contactsRoute);
 
 app.use((err, req, res, next) => {
     const errorStatus = err.status || 500;

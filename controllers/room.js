@@ -1,12 +1,13 @@
 const Hostel = require("../models/Hostel.js");
 const Room = require("../models/Room.js");
+const { createError } = require("../utils/error.js")
 
 exports.createRoom = async (req, res, next) => {
   const hostelId = req.params.hostelid;
-  const newRoom = new Room(req.body);
+  const newroom = new Room(req.body);
 
   try {
-    const savedRoom = await newRoom.save();
+    const savedRoom = await newroom.save();
     try {
       await Hostel.findByIdAndUpdate(hostelId, {
         $push: { rooms: savedRoom._id },
@@ -16,7 +17,7 @@ exports.createRoom = async (req, res, next) => {
     }
     res.status(200).json(savedRoom);
   } catch (err) {
-    next(err);
+    return next(createError(400, "Validation failed! Check input fields"));
   }
 };
 
