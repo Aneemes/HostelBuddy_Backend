@@ -13,31 +13,12 @@ const BookingSchema = new mongoose.Schema({
         ref: "User"
     },
 
-    checkInDate: {
-        type: Date,
-        required: true,
-    },
-
-    checkOutDate: {
-        type: Date,
-        required: true,
-    },
 
     totalPrice: {
         type: Number,
         required: true,
     },
 
-    // daysOfStay: {
-    //     type: Number,
-    //     required: true,
-    // },
-
-
-    // Numberofrooms: {
-    //     type: Number,
-    //     required: true,
-    // },
 
     paymentInfo: {
       id: { type: String },

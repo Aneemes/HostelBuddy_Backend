@@ -16,7 +16,7 @@ exports.register = async (req, res, next) => {
     await newUser.save();
     res.status(200).send("User has been created.");
   } catch (err) {
-    return next(createError(400, "Username already exists"));
+    return next(createError(400, "Credentials already exists"));
   }
 };
 exports.login = async (req, res, next) => {

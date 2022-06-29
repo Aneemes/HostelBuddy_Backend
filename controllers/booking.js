@@ -4,28 +4,28 @@ const Booking = require("../models/Booking.js");
 
 //Create new Booking
 exports.newBooking = async (req, res, next) => {
-    const {
-        hostel_id,
-        room, checkInDate, checkOutDate, Numberofroom,Numberofadult,Numberofchildren,
-         daysOfStay, paymentInfo,totalPrice
-    } = req.body;
+    const newbooking = new Booking(req.body)
     try{
-    const booking = await Booking.create({
-        checkInDate,
-        checkOutDate,
-        paymentInfo,
-        paidAt: Date.now(),
-        totalPrice,
-    });
-  
-   
- 
-    res.status(201).json(booking);
+    await newbooking.save();
+    res.status(201).json(newbooking);
 }    
     catch (err) {
         next(err);
       }
 }
+
+exports.updateBooking = async (req, res, next) => {
+  try {
+    const updatedBooking = await Hostel.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true }
+    );
+    res.status(200).json(updatedBooking);
+  } catch (err) {
+    next(err);
+  }
+};
 
 exports.getBooking = async (req, res, next) => {
     try {

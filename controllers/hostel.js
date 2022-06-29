@@ -1,14 +1,14 @@
 const Hostel = require("../models/Hostel.js");
 const Room = require("../models/Room.js");
+const { createError } = require("../utils/error.js")
 
 exports.createHostel = async (req, res, next) => {
     const newHostel = new Hostel(req.body);
-  
     try {
-      const savedHostel = await newHostel.save();
-      res.status(200).json(savedHostel);
+      await newHostel.save();
+      res.status(200).json("Hostel has been created.");
     } catch (err) {
-      next(err);
+       return next(createError(400, "Validation failed! Check input fields"));
     }
   };
 
