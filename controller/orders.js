@@ -43,7 +43,7 @@ class Order {
       !user ||
       !amount ||
       !transactionId ||
-      !address ||
+    
       !phone
     ) {
       return res.json({ message: "All filled must be required" });
@@ -54,7 +54,7 @@ class Order {
           user,
           amount,
           transactionId,
-          address,
+    
           phone,
         });
         let save = await newOrder.save();
