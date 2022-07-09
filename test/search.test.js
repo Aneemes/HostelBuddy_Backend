@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Hostel = require("../models/Hostel.js");
+const hostels = require("../models/hostels.js");
 const url='mongodb://127.0.0.1:27017/ApiTesting';
 
 beforeAll(async()=>{
