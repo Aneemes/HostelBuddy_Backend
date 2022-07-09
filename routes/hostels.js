@@ -1,33 +1,31 @@
 const express = require("express");
-const { 
-    createHostel,
-    getHostel,
-    getHostels,
-    getHostelRooms,
-    countByCity,
-    countByType,
-    updateHostel,
-    deleteHostel
- } =require ("../controllers/hostel.js");
-const { verifyAdmin } = require("../utils/verifyToken.js");
 const router = express.Router();
+const hostelController = require("../controller/hostels");
+const multer = require("multer");
 
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/uploads/hostels");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "_" + file.originalname);
+  },
+});
 
-router.post("/", verifyAdmin, createHostel);
-//UPDATE
-router.put("/:id", verifyAdmin, updateHostel);
-//DELETE
-router.delete("/:id", verifyAdmin, deleteHostel);
+const upload = multer({ storage: storage });
 
-//GET
+router.get("/all-hostel", hostelController.getAllHostel);
+router.post("/hostel-by-location", hostelController.getHostelByLocation);
+router.post("/hostel-by-price", hostelController.getHostelByPrice);
+router.post("/wish-hostel", hostelController.getWishHostel);
+router.post("/cart-hostel", hostelController.getCartHostel);
 
-router.get("/find/:id", getHostel);
-//GET ALL
+router.post("/add-hostel", upload.any(), hostelController.postAddHostel);
+router.post("/edit-hostel", upload.any(), hostelController.postEditHostel);
+router.post("/delete-hostel", hostelController.getDeleteHostel);
+router.post("/single-hostel", hostelController.getSingleHostel);
 
-router.get("/", getHostels);
-router.get("/countByCity", countByCity);
-router.get("/countByType", countByType);
-router.get("/room/:id", getHostelRooms);
+router.post("/add-review", hostelController.postAddReview);
+router.post("/delete-review", hostelController.deleteReview);
 
-
-module.exports = router
+module.exports = router;
