@@ -1,44 +1,58 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const authRoute = require("./routes/auth")
-require('dotenv').config();
+const express = require("express");
 const app = express();
+require("dotenv").config();
+const mongoose = require("mongoose");
+const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
+
+// Import Router
+const authRouter = require("./routes/auth");
+const locationRouter = require("./routes/locations");
+const hostelRouter = require("./routes/hostels");
+const brainTreeRouter = require("./routes/braintree");
+const orderRouter = require("./routes/orders");
+const usersRouter = require("./routes/users");
+const customizeRouter = require("./routes/customize");
+const contactRouter = require("./routes/contacts");
+
+// Import Auth middleware for check user login or not~
+const { loginCheck } = require("./middleware/auth");
 
 // Database Connection
-const connect = async () => {
-    try {
-      await mongoose.connect("mongodb://localhost:27017/HOSTEL_HUBbbbbbb");
-      console.log("database connected.");
-    } catch (error) {
-      throw error;
-    }
-};
-mongoose.connection.on("disconnected", () => {
-    console.log("database disconnected!");
-});
+mongoose
+  .connect(process.env.DATABASE, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  })
+  .then(() =>
+    console.log(
+      "==============Mongodb Database Connected Successfully=============="
+    )
+  )
+  .catch((err) => console.log("Database Not Connected !!!"));
 
-//middlewares
+// Middleware
+app.use(morgan("dev"));
+app.use(cookieParser());
+app.use(cors());
+app.use(express.static("public"));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use("/api/auth", authRoute);
 
+// Routes
+app.use("/api", authRouter);
+app.use("/api/user", usersRouter);
+app.use("/api/location", locationRouter);
+app.use("/api/hostel", hostelRouter);
+app.use("/api", brainTreeRouter);
+app.use("/api/order", orderRouter);
+app.use("/api/customize", customizeRouter);
+app.use("/api/contact", contactRouter);
 
-app.use((err, req, res, next) => {
-    const errorStatus = err.status || 500;
-    const errorMessage = err.message || "Something went wrong!";
-    return res.status(errorStatus).json({
-      success: false,
-      status: errorStatus,
-      message: errorMessage,
-      stack: err.stack,
-    });
-});
-  
-  
-  
-  
-  // Run Server
-const PORT = process.env.PORT || 8000;
+// Run Server
+const PORT = process.env.PORT || 6000;
 app.listen(PORT, () => {
-connect();
-console.log("Server is running on ", PORT);
+  console.log("Server is running on ", PORT);
 });
